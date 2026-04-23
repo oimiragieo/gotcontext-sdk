@@ -1,0 +1,24 @@
+{
+  "name": "gotcontext",
+  "version": "0.3.0",
+  "description": "Shrink what Claude reads. Outcome-oriented skills that call gotcontext.ai's PageRank-based semantic compression API so you can fit 3-5x more documentation, code, or diffs into a single context window.",
+  "author": {
+    "name": "gotcontext.ai",
+    "email": "support@gotcontext.ai",
+    "url": "https://gotcontext.ai"
+  },
+  "homepage": "https://gotcontext.ai",
+  "repository": "https://github.com/oimiragieo/gotcontext-main",
+  "license": "MIT",
+  "keywords": [
+    "compression",
+    "context",
+    "mcp",
+    "pagerank",
+    "rag",
+    "tokens",
+    "llm"
+  ],
+  "skills": "./skills",
+  "mcpServers": "./mcp-servers/gotcontext.json"
+}

@@ -1,0 +1,27 @@
+{
+  "skill": "review-pr-diff",
+  "_comment": "15 PR/diff review queries (should trigger), plus 5 decoys that are about reading docs, authoring, or codebase overviews instead of reviewing a diff.",
+  "queries": [
+    { "query": "Review my PR against main — what changed and is it safe to merge?", "should_trigger": true },
+    { "query": "Explain this git diff I just ran: git diff main..HEAD", "should_trigger": true },
+    { "query": "Summarize the changes in this branch since it diverged from main.", "should_trigger": true },
+    { "query": "Audit my pull request for security issues — especially auth-related changes.", "should_trigger": true },
+    { "query": "Check my branch diff for anything risky before I merge.", "should_trigger": true },
+    { "query": "Look at git diff main..HEAD and tell me what I should flag in review.", "should_trigger": true },
+    { "query": "What did I change between main and HEAD? Walk me through the diff.", "should_trigger": true },
+    { "query": "Run a code review on my current branch.", "should_trigger": true },
+    { "query": "Is this pull request ready for review? Go through the changes.", "should_trigger": true },
+    { "query": "The diff against main is large — help me understand it without wading through lockfile changes.", "should_trigger": true },
+    { "query": "Explain my PR at a high level: what did it change and why might it be risky?", "should_trigger": true },
+    { "query": "Summarize the delta from the last release tag to HEAD.", "should_trigger": true },
+    { "query": "Review the commits I pushed today.", "should_trigger": true },
+    { "query": "git diff output is hard to read — help me review this change.", "should_trigger": true },
+    { "query": "Look at my branch's changes versus main and flag anything sensitive to billing or auth.", "should_trigger": true },
+
+    { "query": "Write a new git hook that lints before commit.", "should_trigger": false },
+    { "query": "Read /workspace/fixtures/large-doc.md and summarize it.", "should_trigger": false },
+    { "query": "Give me an overview of the codebase at /workspace.", "should_trigger": false },
+    { "query": "What is a merge commit?", "should_trigger": false },
+    { "query": "Explain how git rebase works conceptually.", "should_trigger": false }
+  ]
+}

@@ -1,0 +1,3 @@
+# Reviewers required for changes inside plugins/gotcontext/
+# Anthropic's plugin-review pipeline expects this file alongside plugin.json.
+* @oimiragieo

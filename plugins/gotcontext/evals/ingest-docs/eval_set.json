@@ -1,0 +1,27 @@
+{
+  "skill": "ingest-docs",
+  "_comment": "15 documentation-search / docs-Q&A queries (should trigger), plus 5 decoys that are small-file reads, authoring, conceptual, or routed to other skills.",
+  "queries": [
+    { "query": "Search the docs at /workspace/fixtures for anything about observability.", "should_trigger": true },
+    { "query": "Find the section on consensus protocols in the documentation at /workspace/fixtures/large-doc.md.", "should_trigger": true },
+    { "query": "What do these docs at /workspace/fixtures say about replication modes?", "should_trigger": true },
+    { "query": "Help me navigate the reference material in /workspace/fixtures — I need the bit about phi-accrual.", "should_trigger": true },
+    { "query": "Point me at the failure-modes section in the docs located at /workspace/fixtures.", "should_trigger": true },
+    { "query": "I'm looking for information about LSM trees in the docs — check /workspace/fixtures.", "should_trigger": true },
+    { "query": "Query the documentation tree at /workspace/fixtures for authentication patterns.", "should_trigger": true },
+    { "query": "What does the Stripe-style documentation under /workspace/fixtures cover on distributed transactions?", "should_trigger": true },
+    { "query": "Browse the docs at /workspace/fixtures and find what they say about gossip protocols.", "should_trigger": true },
+    { "query": "Look through the reference docs in /workspace/fixtures for anything related to quorum.", "should_trigger": true },
+    { "query": "Search the markdown docs at /workspace/fixtures for tracing best practices.", "should_trigger": true },
+    { "query": "What does the documentation in /workspace/fixtures say about B-trees vs LSM trees?", "should_trigger": true },
+    { "query": "Find all mentions of Paxos in the docs at /workspace/fixtures.", "should_trigger": true },
+    { "query": "Scan these reference docs at /workspace/fixtures for info on heartbeat-based failure detection.", "should_trigger": true },
+    { "query": "Help me find the section on saga transactions in the documentation tree at /workspace/fixtures.", "should_trigger": true },
+
+    { "query": "Write documentation for this new function I wrote.", "should_trigger": false },
+    { "query": "Give me an overview of the codebase at /workspace.", "should_trigger": false },
+    { "query": "Review my pull request against main.", "should_trigger": false },
+    { "query": "Fix a typo in the README.", "should_trigger": false },
+    { "query": "Explain what documentation-driven development means.", "should_trigger": false }
+  ]
+}

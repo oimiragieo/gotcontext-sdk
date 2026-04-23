@@ -1,0 +1,27 @@
+{
+  "skill": "batch-compress",
+  "_comment": "15 bulk-corpus queries (should trigger), plus 5 decoys that are single-file reads or routed to another skill.",
+  "queries": [
+    { "query": "Bulk-compress all the markdown files under /workspace/fixtures for later Q&A.", "should_trigger": true },
+    { "query": "Pre-process this corpus of documents in /workspace/fixtures so I can ask questions later.", "should_trigger": true },
+    { "query": "Shrink everything in /workspace/fixtures as a batch — I need to index them.", "should_trigger": true },
+    { "query": "Prepare this 50-file directory at /workspace/fixtures for retrieval by compressing each one.", "should_trigger": true },
+    { "query": "Compress all the meeting notes in /workspace/fixtures in one go.", "should_trigger": true },
+    { "query": "Batch-process these support tickets located at /workspace/fixtures.", "should_trigger": true },
+    { "query": "Onboard me to the project at /workspace/fixtures — ingest all the docs upfront.", "should_trigger": true },
+    { "query": "Pre-compress the entire /workspace/fixtures folder as a corpus.", "should_trigger": true },
+    { "query": "Run batch compression on the /workspace/fixtures directory.", "should_trigger": true },
+    { "query": "I have a dump of logs in /workspace/fixtures — compress them all before Q&A.", "should_trigger": true },
+    { "query": "Process all the PDFs in /workspace/fixtures in bulk.", "should_trigger": true },
+    { "query": "Compress the 30 files in /workspace/fixtures as a single batch job.", "should_trigger": true },
+    { "query": "Bulk-ingest these documents located at /workspace/fixtures.", "should_trigger": true },
+    { "query": "Queue a batch compression across everything under /workspace/fixtures.", "should_trigger": true },
+    { "query": "Prepare the entire /workspace/fixtures tree for later retrieval by running bulk compression.", "should_trigger": true },
+
+    { "query": "Read one file at /workspace/fixtures/large-doc.md and summarize it.", "should_trigger": false },
+    { "query": "Give me an overview of the codebase at /workspace.", "should_trigger": false },
+    { "query": "Review my pull request.", "should_trigger": false },
+    { "query": "Search these docs at /workspace/fixtures for the rate-limiting section.", "should_trigger": false },
+    { "query": "Write a new batch-processing script from scratch.", "should_trigger": false }
+  ]
+}

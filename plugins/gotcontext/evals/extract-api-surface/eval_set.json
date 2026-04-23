@@ -1,0 +1,27 @@
+{
+  "skill": "extract-api-surface",
+  "_comment": "15 codebase-overview / API-exploration queries (should trigger), plus 5 decoys that are file-specific, authoring, or conceptual.",
+  "queries": [
+    { "query": "Give me an overview of what's in the /workspace directory — what modules and entry points does it have?", "should_trigger": true },
+    { "query": "I just cloned this project to /workspace. Help me understand what it does at the API level.", "should_trigger": true },
+    { "query": "What's the public API surface of the code under /workspace? List the main exports.", "should_trigger": true },
+    { "query": "Help me understand the structure of this codebase at /workspace.", "should_trigger": true },
+    { "query": "Explain the architecture of the Python package rooted at /workspace.", "should_trigger": true },
+    { "query": "What functions does the library at /workspace expose?", "should_trigger": true },
+    { "query": "Show me the entry points of the project in /workspace.", "should_trigger": true },
+    { "query": "Give me a one-sentence summary per module for the code under /workspace.", "should_trigger": true },
+    { "query": "What classes and interfaces are defined in /workspace?", "should_trigger": true },
+    { "query": "Map out the type definitions in this TypeScript project at /workspace.", "should_trigger": true },
+    { "query": "Outline the public interface of the repo at /workspace.", "should_trigger": true },
+    { "query": "What's exported from this library? Code is at /workspace.", "should_trigger": true },
+    { "query": "Give me an API-level overview of this codebase at /workspace — skip the implementation details.", "should_trigger": true },
+    { "query": "Help me navigate an unfamiliar codebase located at /workspace.", "should_trigger": true },
+    { "query": "Summarize what each module in /workspace is responsible for.", "should_trigger": true },
+
+    { "query": "Fix the bug on line 42 of /workspace/bin/test-baseline.sh.", "should_trigger": false },
+    { "query": "Write a new function that parses JSON in Python.", "should_trigger": false },
+    { "query": "Explain what dependency injection means conceptually.", "should_trigger": false },
+    { "query": "Review the PR I just pushed.", "should_trigger": false },
+    { "query": "Read /workspace/fixtures/large-doc.md and summarize it.", "should_trigger": false }
+  ]
+}

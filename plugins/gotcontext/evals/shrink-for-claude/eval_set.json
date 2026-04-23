@@ -1,0 +1,27 @@
+{
+  "skill": "shrink-for-claude",
+  "_comment": "15 should-trigger queries covering the docs review / file read / large-context scenarios, plus 5 decoys that should NOT trigger this skill (too small, authoring, conceptual, or routed to another skill).",
+  "queries": [
+    { "query": "Read /workspace/fixtures/large-doc.md and summarize its key findings in one paragraph.", "should_trigger": true },
+    { "query": "I need to understand this 10,000-token spec document I have at /workspace/fixtures/large-doc.md. Help me find the most important parts.", "should_trigger": true },
+    { "query": "My Claude context is about to overflow. The target file is /workspace/fixtures/large-doc.md. Can you help?", "should_trigger": true },
+    { "query": "Summarize the content at /workspace/fixtures/large-doc.md — what are the three failure modes it covers?", "should_trigger": true },
+    { "query": "Give me the key decisions from the meeting transcript in /workspace/fixtures/large-doc.md.", "should_trigger": true },
+    { "query": "What does the distributed systems primer at /workspace/fixtures/large-doc.md say about Raft?", "should_trigger": true },
+    { "query": "Help me understand the LSM tree section of /workspace/fixtures/large-doc.md.", "should_trigger": true },
+    { "query": "I pasted a long RFC — but you can read it from /workspace/fixtures/large-doc.md. What's the consensus model?", "should_trigger": true },
+    { "query": "Find the section on consistency models in /workspace/fixtures/large-doc.md and explain it.", "should_trigger": true },
+    { "query": "Read the architecture doc at /workspace/fixtures/large-doc.md and tell me about phi-accrual detection.", "should_trigger": true },
+    { "query": "/workspace/fixtures/large-doc.md is a long reference — extract the observability section.", "should_trigger": true },
+    { "query": "Check /workspace/fixtures/large-doc.md for anything about saga pattern transactions.", "should_trigger": true },
+    { "query": "What does /workspace/fixtures/large-doc.md say about Paxos vs Raft differences? The file is large.", "should_trigger": true },
+    { "query": "Help me review the lengthy distributed systems primer located at /workspace/fixtures/large-doc.md.", "should_trigger": true },
+    { "query": "The file /workspace/fixtures/large-doc.md is too long to read directly — give me the high-level structure.", "should_trigger": true },
+
+    { "query": "What is the capital of France?", "should_trigger": false },
+    { "query": "Explain how a semaphore works in under 50 words.", "should_trigger": false },
+    { "query": "Write a one-line Python function that adds two numbers.", "should_trigger": false },
+    { "query": "Review the PR I just pushed against main.", "should_trigger": false },
+    { "query": "What's the difference between TCP and UDP?", "should_trigger": false }
+  ]
+}

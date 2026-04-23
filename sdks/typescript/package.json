@@ -1,0 +1,63 @@
+{
+  "name": "@gotcontext/sdk",
+  "version": "0.5.2",
+  "description": "Official TypeScript SDK for gotcontext.ai — semantic compression REST API (cuts LLM token usage via graph-based PageRank compression).",
+  "license": "MIT",
+  "author": "gotcontext.ai <support@gotcontext.ai>",
+  "homepage": "https://gotcontext.ai",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/oimiragieo/gotcontext-main.git",
+    "directory": "sdks/typescript"
+  },
+  "bugs": {
+    "url": "https://github.com/oimiragieo/gotcontext-main/issues"
+  },
+  "keywords": [
+    "gotcontext",
+    "llm",
+    "compression",
+    "mcp",
+    "anthropic",
+    "openai",
+    "rag",
+    "context-engineering"
+  ],
+  "type": "module",
+  "main": "dist/index.cjs",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "build": "tsup src/index.ts --format esm,cjs --dts --clean",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "lint": "eslint src --max-warnings=0",
+    "format": "prettier --write src",
+    "check-types": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "@typescript-eslint/eslint-plugin": "^8.0.0",
+    "@typescript-eslint/parser": "^8.0.0",
+    "eslint": "^9.0.0",
+    "prettier": "^3.0.0",
+    "tsup": "^8.0.0",
+    "typescript": "^5.5.0",
+    "vitest": "^2.0.0"
+  }
+}

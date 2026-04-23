@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "gotcontext": {
+      "type": "http",
+      "url": "https://api.gotcontext.ai/mcp",
+      "headers": {
+        "Authorization": "Bearer ${GOTCONTEXT_API_KEY}"
+      }
+    }
+  }
+}
