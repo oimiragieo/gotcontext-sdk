@@ -1,0 +1,20 @@
+{
+  "name": "gotcontext-plugins",
+  "metadata": {
+    "description": "Official gotcontext.ai plugins for Claude Code — outcome-oriented skills that wrap the gotcontext semantic compression API."
+  },
+  "owner": {
+    "name": "gotcontext.ai",
+    "email": "support@gotcontext.ai",
+    "url": "https://gotcontext.ai"
+  },
+  "plugins": [
+    {
+      "name": "gotcontext",
+      "source": "./plugins/gotcontext",
+      "description": "Shrink what Claude reads. 5 outcome-oriented skills that compress documentation, codebases, diffs, and file corpora via gotcontext.ai's PageRank-based semantic compression.",
+      "version": "0.3.0",
+      "strict": false
+    }
+  ]
+}
