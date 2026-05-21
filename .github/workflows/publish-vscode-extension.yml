@@ -1,7 +1,8 @@
 name: Publish VS Code Extension
 
 # Triggers:
-# 1. Auto-publish (patch bump) whenever extension source changes on main.
+# 1. Auto-publish (patch bump) whenever extension source changes on main and
+#    VSCE_PAT is configured.
 #    This is the anti-silo mechanism: any code change to sdks/vscode-extension/
 #    is automatically compiled, version-bumped, and published without a manual
 #    tag or developer action.
@@ -29,7 +30,7 @@ on:
 
 jobs:
   publish:
-    name: Build, bump, and publish
+    name: Build, package, and publish
     runs-on: ubuntu-latest
 
     # Write permission so we can commit the version bump back to main.
@@ -67,6 +68,18 @@ jobs:
       - name: Install vsce
         run: npm install -g @vscode/vsce
 
+      - name: Check Marketplace token
+        id: marketplace
+        env:
+          VSCE_PAT: ${{ secrets.VSCE_PAT }}
+        run: |
+          if [ -z "$VSCE_PAT" ]; then
+            echo "available=false" >> $GITHUB_OUTPUT
+            echo "::warning::VSCE_PAT is not configured; skipping Marketplace publish and version bump."
+          else
+            echo "available=true" >> $GITHUB_OUTPUT
+          fi
+
       # Version strategy:
       # Tag push  → use the exact version already in package.json (developer
       #             set it intentionally before pushing the tag).
@@ -78,7 +91,10 @@ jobs:
       - name: Determine bump type
         id: bump
         run: |
-          if [[ "${{ github.ref_type }}" == "tag" ]]; then
+          if [[ "${{ steps.marketplace.outputs.available }}" != "true" ]]; then
+            echo "type=none" >> $GITHUB_OUTPUT
+            echo "Skipping version bump because Marketplace publishing is disabled without VSCE_PAT"
+          elif [[ "${{ github.ref_type }}" == "tag" ]]; then
             echo "type=none" >> $GITHUB_OUTPUT
             echo "Publishing exact version from package.json (tag release)"
           elif [[ "${{ github.event_name }}" == "push" ]]; then
@@ -87,7 +103,10 @@ jobs:
               node -e 'let s=""; process.stdin.on("data", d => s += d); process.stdin.on("end", () => { try { console.log(JSON.parse(s).version || "") } catch { console.log("") } })'
             )"
             NEW_VERSION="$(node -p "require('./sdks/vscode-extension/package.json').version")"
-            if [[ -n "$OLD_VERSION" && "$OLD_VERSION" != "$NEW_VERSION" ]]; then
+            if [[ -z "$OLD_VERSION" ]]; then
+              echo "type=none" >> $GITHUB_OUTPUT
+              echo "Publishing initial extension version from package.json: $NEW_VERSION"
+            elif [[ "$OLD_VERSION" != "$NEW_VERSION" ]]; then
               echo "type=none" >> $GITHUB_OUTPUT
               echo "Publishing intentional version from package.json: $OLD_VERSION -> $NEW_VERSION"
             else
@@ -124,17 +143,9 @@ jobs:
           git commit -m "chore(vscode-ext): bump to v${{ steps.version.outputs.version }} [skip ci]"
           git push origin HEAD:main
 
-      - name: Verify Marketplace token
-        env:
-          VSCE_PAT: ${{ secrets.VSCE_PAT }}
-        run: |
-          if [ -z "$VSCE_PAT" ]; then
-            echo "::error::VSCE_PAT is not configured. Add a Visual Studio Marketplace PAT to this repo's Actions secrets."
-            exit 1
-          fi
-
       # Publish. Requires the VSCE_PAT repository secret.
       - name: Publish to VS Code Marketplace
+        if: steps.marketplace.outputs.available == 'true'
         working-directory: sdks/vscode-extension
         run: vsce publish --pat ${{ secrets.VSCE_PAT }}
         env:
