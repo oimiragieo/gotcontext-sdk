@@ -2,7 +2,7 @@
   "name": "gotcontext",
   "displayName": "gotcontext.ai - Token Compression",
   "description": "Configure gotcontext.ai MCP server for AI token compression",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "publisher": "gotcontextai",
   "license": "MIT",
   "repository": {
