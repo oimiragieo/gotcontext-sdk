@@ -25,7 +25,7 @@ automate the submission itself, only keep the plugin ready to pass review.
    /plugin install gotcontext@gotcontext-plugins
    ```
 
-   Run each of the 5 skills on a small sample and confirm the MCP server
+   Run each plugin skill on a small sample and confirm the MCP server
    connects with `GOTCONTEXT_API_KEY` in the env.
 
 4. Verify the README answers:
@@ -60,7 +60,7 @@ without any marketplace-add step.
 Users can install directly from our GitHub today:
 
 ```
-/plugin marketplace add oimiragieo/gotcontext-main
+/plugin marketplace add oimiragieo/gotcontext-sdk
 /plugin install gotcontext
 ```
 
@@ -71,4 +71,5 @@ Marketplace listing adds discoverability, not functionality.
 1. **Outside-directory references** — all skill/hook/script paths must be
    under the plugin directory.
 2. **Insufficient README** — "install and use" is not enough.
-3. **Plugin does too much** — if we ever bundle >7 skills, split.
+3. **Plugin does too much** — keep each skill outcome-scoped; split the
+   plugin only if review feedback says the directory is too broad.

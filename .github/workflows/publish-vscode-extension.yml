@@ -1,0 +1,169 @@
+name: Publish VS Code Extension
+
+# Triggers:
+# 1. Auto-publish (patch bump) whenever extension source changes on main.
+#    This is the anti-silo mechanism: any code change to sdks/vscode-extension/
+#    is automatically compiled, version-bumped, and published without a manual
+#    tag or developer action.
+#
+# 2. Manual release via tag sdk-vscode/vX.Y.Z for intentional major/minor
+#    releases where the version in package.json is already correct.
+#
+# 3. workflow_dispatch for on-demand releases with an explicit bump type.
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "sdks/vscode-extension/**"
+    tags:
+      - "sdk-vscode/v*"
+  workflow_dispatch:
+    inputs:
+      bump:
+        description: "Version bump (patch / minor / major). Used only on manual dispatch."
+        required: false
+        default: "patch"
+        type: choice
+        options: [patch, minor, major]
+
+jobs:
+  publish:
+    name: Build, bump, and publish
+    runs-on: ubuntu-latest
+
+    # Write permission so we can commit the version bump back to main.
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          # Use the default GITHUB_TOKEN for the write-back push.
+          # checkout with token so git push is authenticated.
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: "20"
+
+      - name: Install dependencies
+        working-directory: sdks/vscode-extension
+        run: npm ci
+
+      - name: Test
+        working-directory: sdks/vscode-extension
+        run: npm test
+
+      - name: Lint
+        working-directory: sdks/vscode-extension
+        run: npm run lint
+
+      - name: Compile TypeScript
+        working-directory: sdks/vscode-extension
+        run: npm run compile
+
+      - name: Install vsce
+        run: npm install -g @vscode/vsce
+
+      # Version strategy:
+      # Tag push  → use the exact version already in package.json (developer
+      #             set it intentionally before pushing the tag).
+      # Version changed in the merged PR → publish that exact intentional
+      #             version, e.g. v0.2.0 for a minor release.
+      # Auto/manual → bump the patch (or explicit bump type) so every publish
+      #               has a unique, monotonically-increasing version and the
+      #               bumped package.json is committed back to main.
+      - name: Determine bump type
+        id: bump
+        run: |
+          if [[ "${{ github.ref_type }}" == "tag" ]]; then
+            echo "type=none" >> $GITHUB_OUTPUT
+            echo "Publishing exact version from package.json (tag release)"
+          elif [[ "${{ github.event_name }}" == "push" ]]; then
+            OLD_VERSION="$(
+              git show "${{ github.event.before }}:sdks/vscode-extension/package.json" 2>/dev/null |
+              node -e 'let s=""; process.stdin.on("data", d => s += d); process.stdin.on("end", () => { try { console.log(JSON.parse(s).version || "") } catch { console.log("") } })'
+            )"
+            NEW_VERSION="$(node -p "require('./sdks/vscode-extension/package.json').version")"
+            if [[ -n "$OLD_VERSION" && "$OLD_VERSION" != "$NEW_VERSION" ]]; then
+              echo "type=none" >> $GITHUB_OUTPUT
+              echo "Publishing intentional version from package.json: $OLD_VERSION -> $NEW_VERSION"
+            else
+              echo "type=patch" >> $GITHUB_OUTPUT
+              echo "Auto-bumping: patch"
+            fi
+          else
+            BUMP="${{ github.event.inputs.bump || 'patch' }}"
+            echo "type=$BUMP" >> $GITHUB_OUTPUT
+            echo "Auto-bumping: $BUMP"
+          fi
+
+      - name: Bump version in package.json
+        if: steps.bump.outputs.type != 'none'
+        working-directory: sdks/vscode-extension
+        run: npm version ${{ steps.bump.outputs.type }} --no-git-tag-version
+
+      - name: Read new version
+        id: version
+        working-directory: sdks/vscode-extension
+        run: |
+          VERSION=$(npm pkg get version | tr -d '"')
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "Publishing version $VERSION"
+
+      # Commit the bumped package.json back to main so the repo stays in sync.
+      # [skip ci] prevents this commit from re-triggering the workflow.
+      - name: Commit version bump
+        if: steps.bump.outputs.type != 'none'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add sdks/vscode-extension/package.json sdks/vscode-extension/package-lock.json
+          git commit -m "chore(vscode-ext): bump to v${{ steps.version.outputs.version }} [skip ci]"
+          git push origin HEAD:main
+
+      - name: Verify Marketplace token
+        env:
+          VSCE_PAT: ${{ secrets.VSCE_PAT }}
+        run: |
+          if [ -z "$VSCE_PAT" ]; then
+            echo "::error::VSCE_PAT is not configured. Add a Visual Studio Marketplace PAT to this repo's Actions secrets."
+            exit 1
+          fi
+
+      # Publish. Requires the VSCE_PAT repository secret.
+      - name: Publish to VS Code Marketplace
+        working-directory: sdks/vscode-extension
+        run: vsce publish --pat ${{ secrets.VSCE_PAT }}
+        env:
+          VSCE_PAT: ${{ secrets.VSCE_PAT }}
+
+      - name: Package .vsix artifact
+        working-directory: sdks/vscode-extension
+        run: vsce package --out gotcontext-${{ steps.version.outputs.version }}.vsix
+
+      - name: Upload .vsix artifact
+        uses: actions/upload-artifact@v5
+        with:
+          name: gotcontext-vsix-${{ steps.version.outputs.version }}
+          path: sdks/vscode-extension/gotcontext-*.vsix
+          retention-days: 90
+
+      # Create GitHub Release for tag-based publishes.
+      - name: Create GitHub Release
+        if: github.ref_type == 'tag'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: "gotcontext VS Code Extension v${{ steps.version.outputs.version }}"
+          body: |
+            ## gotcontext.ai VS Code Extension v${{ steps.version.outputs.version }}
+
+            Install from the [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=gotcontextai.gotcontext)
+            or download the `.vsix` artifact below.
+
+            ### What's new
+            See [CHANGELOG.md](https://github.com/oimiragieo/gotcontext-sdk/blob/main/sdks/vscode-extension/CHANGELOG.md)
+          files: sdks/vscode-extension/gotcontext-*.vsix

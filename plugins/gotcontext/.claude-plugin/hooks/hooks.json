@@ -1,0 +1,35 @@
+{
+  "description": "gotcontext.ai lifecycle hooks: refresh tool list on session start; nudge compression before compaction; opportunistic shrink on stop.",
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ${CLAUDE_PLUGIN_ROOT}/.claude-plugin/hooks/gotcontext-sessionstart.sh"
+          }
+        ]
+      }
+    ],
+    "PreCompact": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ${CLAUDE_PLUGIN_ROOT}/.claude-plugin/hooks/gotcontext-precompact.sh"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ${CLAUDE_PLUGIN_ROOT}/.claude-plugin/hooks/gotcontext-stop.sh"
+          }
+        ]
+      }
+    ]
+  }
+}

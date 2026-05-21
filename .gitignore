@@ -2,6 +2,8 @@
 node_modules/
 dist/
 build/
+out/
+*.vsix
 *.tsbuildinfo
 
 # Python
@@ -27,4 +29,5 @@ venv/
 Thumbs.db
 
 # Misc
+.tmp/
 *.log

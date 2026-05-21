@@ -10,9 +10,10 @@ This repo ships the four things customers install or run locally. The platform i
 
 | Path | What |
 |------|------|
-| [`plugins/gotcontext/`](./plugins/gotcontext/) | Claude Code plugin — 5 outcome-shaped skills pre-wired to the MCP server. Install with `/plugin marketplace add oimiragieo/gotcontext-sdk` then `/plugin install gotcontext`. |
+| [`plugins/gotcontext/`](./plugins/gotcontext/) | Claude Code plugin — outcome-shaped skills pre-wired to the MCP server. Install with `/plugin marketplace add oimiragieo/gotcontext-sdk` then `/plugin install gotcontext`. |
 | [`sdks/python/`](./sdks/python/) | Python SDK. `pip install gotcontext`. |
 | [`sdks/typescript/`](./sdks/typescript/) | TypeScript / Node SDK source. |
+| [`sdks/vscode-extension/`](./sdks/vscode-extension/) | VS Code extension source for one-click gotcontext MCP setup. |
 | [`benchmarks/real_llm_cross_provider_smoke.py`](./benchmarks/real_llm_cross_provider_smoke.py) | Reproduces the "35% billed savings" headline on [`/savings-by-model`](https://gotcontext.ai/savings-by-model). Hits live Anthropic / OpenAI / Google APIs with compressed + uncompressed prompts and reads back the `input_tokens` each provider bills. Requires your own provider keys. |
 | [`benchmarks/per_model_savings_smoke.py`](./benchmarks/per_model_savings_smoke.py) | Drives `compress_meta_tokens` once per registered model and cross-checks against `/v1/usage/by-model`. |
 
@@ -25,12 +26,15 @@ This repo ships the four things customers install or run locally. The platform i
 {
   "mcpServers": {
     "gotcontext": {
-      "url": "https://api.gotcontext.ai/mcp",
+      "type": "http",
+      "url": "https://api.gotcontext.ai/mcp?profile=core",
       "headers": { "Authorization": "Bearer gc_your_key" }
     }
   }
 }
 ```
+
+The `core` profile exposes the seven lightweight compression tools for lower tool-list overhead. Use `https://api.gotcontext.ai/mcp?profile=full` when you need the full catalogue or platform tools such as `gc_pre_flight`.
 
 3. From Claude Code / Cursor / Windsurf, call the tools naturally:
 

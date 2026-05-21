@@ -1,8 +1,9 @@
 {
+  "_comment": "v1.23.18+ - default to ?profile=core (7 essential compression tools). Swap to ?profile=full (or remove the query param) for the complete tool catalogue and platform tools. See https://gotcontext.ai/docs#mcp-server for the full tool catalog.",
   "mcpServers": {
     "gotcontext": {
       "type": "http",
-      "url": "https://api.gotcontext.ai/mcp",
+      "url": "https://api.gotcontext.ai/mcp?profile=core",
       "headers": {
         "Authorization": "Bearer ${GOTCONTEXT_API_KEY}"
       }

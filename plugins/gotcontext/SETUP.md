@@ -32,11 +32,11 @@ Run this skill once per machine; subsequent runs will reuse the saved key.
 5. Verify the connection by invoking the `shrink-for-claude` skill on a small
    sample file. If it returns a compression result, the setup is complete.
 
-## Free tier
+## Plans
 
-The Free plan includes 100 compressions/month — enough for casual use. Upgrade
-to Pro ($29/mo) at <https://gotcontext.ai/pricing> for 50,000 compressions/month
-and the full 121+ MCP tool surface.
+The Free plan is enough for casual setup testing. Current quotas, pricing, and
+access to the complete MCP tool surface are listed at
+<https://gotcontext.ai/pricing>.
 
 ## Troubleshooting
 
