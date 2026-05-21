@@ -31,6 +31,46 @@ the diff first lets you spend your reasoning budget on what matters.
    ranked context — pass the changed files + the PR's focus symbol
    (e.g. the primary function name or class) and it returns only the
    touched code plus what transitively calls into it (Pro+ only).
+
+   For a lighter "who calls this changed function?" question without
+   the full transitive graph, prefer `gc_callers` (Pro+ only).
+   It returns call sites + likely impacted test files for a symbol,
+   at lower cost than a full blast-radius run:
+
+   ```json
+   {
+     "name": "gc_callers",
+     "arguments": {
+       "files": [
+         {"path": "api/app/services/compression.py", "content": "..."}
+       ],
+       "focus_symbol": "compress"
+     }
+   }
+   ```
+
+   Use the returned impacted_tests list to target your test review —
+   if the PR's diff doesn't cover those test files, flag as a risk.
+
+   The required input schema for `gc_blast_radius` is:
+
+   ```json
+   {
+     "name": "gc_blast_radius",
+     "arguments": {
+       "files": [
+         {"path": "api/app/main.py", "content": "...file contents..."},
+         {"path": "api/app/services/compression.py", "content": "..."}
+       ],
+       "focus_symbol": "compress",
+       "top_k": 50
+     }
+   }
+   ```
+
+   `files` must be an array of `{path, content}` objects — not an array
+   of path strings, and not a "changed_files" key. Both path and content
+   are required for every entry.
 5. Present the review in this structure:
    - **Summary** — 2-3 bullets on what the PR does
    - **Logic changes** — grouped by file/area, with line refs

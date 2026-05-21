@@ -1,0 +1,73 @@
+{
+  "name": "gotcontext",
+  "displayName": "gotcontext.ai - Token Compression",
+  "description": "Configure gotcontext.ai MCP server for AI token compression",
+  "version": "0.2.0",
+  "publisher": "gotcontextai",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/oimiragieo/gotcontext-sdk",
+    "directory": "sdks/vscode-extension"
+  },
+  "bugs": {
+    "url": "https://github.com/oimiragieo/gotcontext-sdk/issues"
+  },
+  "homepage": "https://gotcontext.ai",
+  "icon": "images/icon.png",
+  "galleryBanner": {
+    "color": "#0D0D0F",
+    "theme": "dark"
+  },
+  "keywords": [
+    "mcp",
+    "ai",
+    "compression",
+    "context",
+    "llm",
+    "token"
+  ],
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onCommand:gotcontext.configure",
+    "onCommand:gotcontext.dashboard"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "gotcontext.configure",
+        "title": "gotcontext: Configure MCP Server"
+      },
+      {
+        "command": "gotcontext.dashboard",
+        "title": "gotcontext: Open Dashboard"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "test": "vitest run",
+    "lint": "eslint src --max-warnings=0",
+    "format": "prettier --write \"src/**/*.ts\" \"*.md\"",
+    "package": "vsce package"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.18.0",
+    "@types/node": "^20.11.0",
+    "@types/vscode": "^1.85.0",
+    "@vscode/vsce": "^2.22.0",
+    "eslint": "^9.18.0",
+    "prettier": "^3.4.2",
+    "typescript": "^5.3.0",
+    "typescript-eslint": "^8.20.0",
+    "vitest": "^3.2.4"
+  }
+}

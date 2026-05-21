@@ -1,0 +1,75 @@
+name: Check MCP Install Defaults
+
+on:
+  pull_request:
+    paths:
+      - "README.md"
+      - "plugins/gotcontext/**"
+      - "sdks/vscode-extension/**"
+      - ".github/workflows/check-extension-drift.yml"
+
+jobs:
+  install-defaults:
+    name: Validate plugin and VS Code MCP defaults
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: "20"
+
+      - name: Validate MCP install defaults
+        run: |
+          node <<'NODE'
+          const fs = require('fs');
+
+          const expectedCoreUrl = 'https://api.gotcontext.ai/mcp?profile=core';
+          const plugin = JSON.parse(fs.readFileSync('plugins/gotcontext/mcp-servers/gotcontext.json', 'utf8'));
+          const pluginUrl = plugin?.mcpServers?.gotcontext?.url;
+          if (pluginUrl !== expectedCoreUrl) {
+            throw new Error(`Plugin MCP URL drifted: expected ${expectedCoreUrl}, got ${pluginUrl}`);
+          }
+
+          const extensionSource = fs.readFileSync('sdks/vscode-extension/src/extension.ts', 'utf8');
+          for (const required of [
+            'MCP_SERVER_BASE_URL = "https://api.gotcontext.ai/mcp"',
+            'mcpServerUrlForProfile(profile',
+            'buildMcpServerConfig(',
+            'profile=${profile}',
+            'type: "http"',
+            'Core (recommended)',
+            'gc_pre_flight',
+          ]) {
+            if (!extensionSource.includes(required)) {
+              throw new Error(`VS Code extension missing expected profile/default marker: ${required}`);
+            }
+          }
+
+          const readme = fs.readFileSync('README.md', 'utf8');
+          if (!readme.includes(expectedCoreUrl)) {
+            throw new Error(`Root README must document the core profile URL: ${expectedCoreUrl}`);
+          }
+          if (!readme.includes('"type": "http"')) {
+            throw new Error('Root README MCP example must include "type": "http"');
+          }
+          NODE
+
+      - name: Install extension dependencies
+        working-directory: sdks/vscode-extension
+        run: npm ci
+
+      - name: Test extension
+        working-directory: sdks/vscode-extension
+        run: npm test
+
+      - name: Lint extension
+        working-directory: sdks/vscode-extension
+        run: npm run lint
+
+      - name: Compile extension
+        working-directory: sdks/vscode-extension
+        run: npm run compile
