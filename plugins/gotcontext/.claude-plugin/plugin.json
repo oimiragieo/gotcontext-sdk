@@ -8,7 +8,7 @@
     "url": "https://gotcontext.ai"
   },
   "homepage": "https://gotcontext.ai",
-  "repository": "https://github.com/oimiragieo/gotcontext-main",
+  "repository": "https://github.com/oimiragieo/gotcontext-plugin",
   "license": "MIT",
   "keywords": [
     "compression",

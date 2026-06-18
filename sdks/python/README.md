@@ -109,7 +109,7 @@ result = await session.call_tool(
 
 When `model` is unknown to the server, it falls back to the resolver
 chain (`api_key.default_model` -> plan heuristic). See
-[`docs/model-attribution.md`](https://github.com/oimiragieo/gotcontext-main/blob/main/docs/model-attribution.md)
+[`docs/model-attribution.md`](https://gotcontext.ai/docs)
 for the full resolution chain.
 
 ## Anthropic prompt cache (cache_breakpoints)

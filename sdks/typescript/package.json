@@ -7,11 +7,11 @@
   "homepage": "https://gotcontext.ai",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/oimiragieo/gotcontext-main.git",
+    "url": "git+https://github.com/oimiragieo/gotcontext-sdk.git",
     "directory": "sdks/typescript"
   },
   "bugs": {
-    "url": "https://github.com/oimiragieo/gotcontext-main/issues"
+    "url": "https://github.com/oimiragieo/gotcontext-sdk/issues"
   },
   "keywords": [
     "gotcontext",

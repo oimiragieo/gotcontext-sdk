@@ -76,7 +76,7 @@ await session.callTool({
 
 When the server does not recognize `model`, it falls back to the resolver
 chain (`api_key.default_model` -> plan heuristic). See
-[`docs/model-attribution.md`](https://github.com/oimiragieo/gotcontext-main/blob/main/docs/model-attribution.md).
+[`docs/model-attribution.md`](https://gotcontext.ai/docs).
 
 ### Anthropic prompt cache (cache_breakpoints)
 
