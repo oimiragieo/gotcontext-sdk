@@ -6,6 +6,8 @@ Public SDKs, the Claude Code plugin, and reproducible benchmarks for [gotcontext
 
 This repo ships the four things customers install or run locally. The platform itself (API, dashboard, compressor internals) lives in a separate private repo.
 
+**Also on the platform (Pro):** AI-native **security scanning** over the same MCP endpoint — `gc_scan` runs 128 AST security rules over an uploaded code bundle (findings by rule / severity / file / line), and `gc_skill_scan` inspects a `SKILL.md` or MCP tool-manifest for AI-native threats (tool-poisoning, prompt-injection, least-privilege, excessive-agency) and returns a `safe_to_install` verdict. Scan a skill or MCP server *before* your agent trusts it. Both are Pro-tier and live under the `?profile=full` endpoint (see quickstart).
+
 ## What's in here
 
 | Path | What |
@@ -34,7 +36,7 @@ This repo ships the four things customers install or run locally. The platform i
 }
 ```
 
-The `core` profile exposes the seven lightweight compression tools for lower tool-list overhead. Use `https://api.gotcontext.ai/mcp?profile=full` when you need the full catalogue or platform tools such as `gc_pre_flight`.
+The `core` profile exposes the seven lightweight compression tools for lower tool-list overhead. Use `https://api.gotcontext.ai/mcp?profile=full` when you need the full catalogue or platform tools such as `gc_pre_flight` (Pro+), the code-navigation suite (`gc_blast_radius`, `gc_callers`, …), and the security scanners (`gc_scan`, `gc_skill_scan`).
 
 3. From Claude Code / Cursor / Windsurf, call the tools naturally:
 
