@@ -41,7 +41,7 @@ The `core` profile exposes the seven lightweight compression tools for lower too
 3. From Claude Code / Cursor / Windsurf, call the tools naturally:
 
 ```
-> ingest_context(file_id="api.md", content="...")
+> ingest_context(file_id="api.md", text="...")
 > read_skeleton(file_id="api.md", ratio=0.15)
 ```
 
