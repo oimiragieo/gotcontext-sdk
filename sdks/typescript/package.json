@@ -1,6 +1,6 @@
 {
   "name": "@gotcontext/sdk",
-  "version": "0.5.2",
+  "version": "0.6.1",
   "description": "Official TypeScript SDK for gotcontext.ai — semantic compression REST API (cuts LLM token usage via graph-based PageRank compression).",
   "license": "MIT",
   "author": "gotcontext.ai <support@gotcontext.ai>",
@@ -58,6 +58,9 @@
     "prettier": "^3.0.0",
     "tsup": "^8.0.0",
     "typescript": "^5.5.0",
-    "vitest": "^2.0.0"
+    "vitest": "^4.1.0"
+  },
+  "overrides": {
+    "esbuild": "^0.28.1"
   }
 }
